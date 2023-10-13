@@ -1,16 +1,8 @@
-from flask import Flask, render_template
-app = Flask(__name__)
+from website import create_app
 
-#Secret key, not sure what for but it is in the lab2 code! N.S.
-app.secret_key = 'Fire Breathing Rubber Duckies'
 
-@app.route("/")
+app = create_app()
 
-#Runs the page
-def home():
-    #Calls the homepage template to format the webpage
-    return render_template("homepage.html")
-
-#Runs the app (Website)
+# Runs the app (Website)
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

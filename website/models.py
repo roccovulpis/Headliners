@@ -9,11 +9,14 @@ from sqlalchemy.sql import func
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     user_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
+    name = db.Column(db.String)
+    email = db.Column(db.String, unique=True)
     password = db.Column(db.String)
     phone_number = db.Column(db.String)
-    email = db.Column(db.String, unique=True)
     role = db.Column(db.String)
+
+    def get_id(self):
+        return str(self.user_id)
 
 class Barber_detail(db.Model):
     __tablename__ = 'barber_details'

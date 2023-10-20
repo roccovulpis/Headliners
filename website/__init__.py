@@ -22,7 +22,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Barber_detail, Appointment, Barber_service, Service, Client_detail, Review
+    from .models import User, Barber_detail, Appointment, Barber_service, Client_detail, Review, Barber_availability
 
     create_database(app)
 

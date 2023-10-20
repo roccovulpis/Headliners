@@ -33,11 +33,6 @@ class Appointment(db.Model):
     time = db.Column(db.Time)
     service_id = db.Column(db.Integer, db.ForeignKey('services.service_id'))
 
-class Service(db.Model):
-    __tablename__ = 'services'
-    service_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-
 class Review(db.Model):
     __tablename__ = 'reviews'
     review_id = db.Column(db.Integer, primary_key=True)
@@ -57,6 +52,15 @@ class Barber_service(db.Model):
     __tablename__ = 'barber_services'
     barber_service_id = db.Column(db.Integer, primary_key=True)
     barber_id = db.Column(db.Integer, db.ForeignKey('barber_details.barber_id'))
-    service_id = db.Column(db.Integer, db.ForeignKey('services.service_id'))
+    name = db.Column(db.String)
+    desc = db.Column(db.String)
     price = db.Column(db.Integer)
     duration = db.Column(db.Integer)
+
+class Barber_availability(db.Model):
+    __tablename__ = "barber_availability"
+    barber_availability_id = db.Column(db.Integer, primary_key=True)
+    barber_id = db.Column(db.Integer, db.ForeignKey('barber_details.barber_id'))
+    week_day = db.Column(db.String)
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)

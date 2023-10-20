@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Create Appointment{% endblock %}
+
+{% block content %}
+<form method="POST" class="mx-auto mt-5" style="width:600px;">
+    <h3 class="text-center">Create Barber Appointment</h3>
+
+    <!-- Barber Service -->
+    <div class="form-group">
+        <label for="service">Barber Service</label>
+        <input type="text" class="form-control" id="service" name="service" placeholder="Service Name">
+    </div>
+
+    <!-- Description of the Service -->
+    <div class="form-group">
+        <label for="description">Description of the Service</label>
+        <input type="text" maxlength="150" class="form-control" id="description" name="description" placeholder="Describe the service (max 150 chars)">
+    </div>
+
+    <!-- Price of the Service -->
+    <div class="form-group">
+        <label for="price">Price of the Service ($)</label>
+        <input type="number" class="form-control" id="price" name="price" placeholder="Enter price">
+    </div>
+
+    <!-- Duration of the Service -->
+    <div class="form-group">
+        <label for="duration">Duration</label>
+        <select name="duration" id="duration" class="form-control">
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="75">1 hour 15 minutes</option>
+            <option value="90">1 hour 30 minutes</option>
+            <!-- Add more options if needed -->
+        </select>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Create Appointment</button>
+</form>
+{% endblock %}

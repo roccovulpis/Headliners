@@ -22,47 +22,6 @@ def profile(barber_id):
 
     return render_template("profile.html", barber=barber, user=current_user)
 
-@views.route('/upload-picture', methods=['GET', 'POST'])
-def upload_picture():
-    # Check if the user is a barber
-    if current_user.role != 'barber':
-        flash('This feature is for barbers only!', 'danger')
-        return redirect(url_for('views.home'))
-    
-    # Handle form submission
-    if request.method == 'POST':
-        # Check if the request has the file part
-        if 'file' not in request.files:
-            flash('No file part', 'danger')
-            return redirect(request.url)
-        
-        file = request.files['file']
-        
-        # If the user does not select a file, the browser might submit an empty file without a filename.
-        if file.filename == '':
-            flash('No selected file', 'danger')
-            return redirect(request.url)
-        
-        # If the file is allowed
-        if file and allowed_file(file.filename):
-            # Use the utility function to save the picture
-            filename = save_picture(file)
-            
-            # Update the user's picture_filename field
-            current_user.barber_detail.picture_filename = filename
-            db.session.commit()
-
-            flash('Your profile picture has been updated!', 'success')
-            return redirect(url_for('views.profile', barber_id=current_user.barber_detail.barber_id))
-        
-        else:
-            flash('Invalid file type', 'danger')
-            return redirect(request.url)
-
-    # If it's a GET request or any other case, render the upload form.
-    return render_template('upload_picture.html', user=current_user)
-
-    
 
 @views.route('/barbers')
 def barbers():

@@ -35,6 +35,8 @@
                     {% if user.is_authenticated %}
                         <!-- Links for authenticated users -->
                         <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+                        <a class="nav-item nav-link" id="dashboard" href="/dashboard">Dashboard</a>
+
 
                         {% if user.role == 'barber' %}
                             <!-- Links for barbers only -->

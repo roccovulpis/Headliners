@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask
 import sqlite3 
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+from . import helpers
 
 
 db = SQLAlchemy()
@@ -17,7 +18,7 @@ def create_app():
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-    
+
     app.config['SECRET_KEY'] = 'peepeepoopoo'
     app.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
@@ -25,8 +26,10 @@ def create_app():
 
     from .views import views
     from .auth import auth
+    from .dashboard import dashboard
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(dashboard, url_prefix='/dashboard')
 
     from .models import User, Barber_detail, Appointment, Barber_service, Client_detail, Review, Barber_availability
 

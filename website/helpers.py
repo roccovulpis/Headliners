@@ -1,10 +1,11 @@
-from .models import Barber_detail
 from flask import abort, current_app
 import os
 import secrets
 from werkzeug.utils import secure_filename
 
 def get_barber_by_id(barber_id):
+    from .models import Barber_detail
+
     barber_detail= Barber_detail.query.get_or_404(barber_id)
     user = barber_detail.user
     if user is None:

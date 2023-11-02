@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+    <h3>Edit Profile</h3>
+    <form action="{{ url_for('dashboard.edit_profile') }}" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" value="{{ barber.name }}">
+        </div>
+        <div>
+            <label for="email">Email:</label><br>
+            <input type="text" id="email" name="email" value="{{ barber.email }}">
+        </div>
+        <div>
+            <label for="phone">Phone:</label><br>
+            <input type="text" id="phone" name="phone" value="{{ barber.phone }}">
+        </div>
+        <div>
+            <label for="profile_picture">Profile Picture:</label><br>
+            <input type="file" id="profile_picture" name="profile_picture">
+        </div>
+        <div>
+            <input type="submit" value="Update">
+        </div>
+    </form>
+{% endblock %}

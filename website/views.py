@@ -26,7 +26,6 @@ def profile(barber_id):
 @views.route('/barbers')
 def barbers():
     barbers = Barber_detail.query.all()
-    print(barbers)
     return render_template("barber_list.html", user=current_user, barbers=barbers)
 
 @views.route('/appointment', methods=['POST'])

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}Upload a profile picture{% endblock %}
+{% block content %}
+<form action="{{ url_for('views.upload_picture') }}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit" value="Upload">
+</form>
+{% endblock %}

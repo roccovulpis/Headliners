@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Barber List{% endblock %}
+{% block contents %}
+<div class="container">
+    <div class="row">
+        {% for barber_detail in barber_details %}
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename = 'photos/profile_pictures/' + barber.picture_filename) }}" class="card-img-top" alt="{{ barber.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ barber_detail.name }}</h5>
+                        <a href="{{ url_for('views.profile', barber_id=barber.barber_id) }}" class="btn btn-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+            {% if loop.index == 4 %} <!-- Break after 4 cards to create the mirrored effect -->
+                </div>
+                <div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

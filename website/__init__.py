@@ -12,6 +12,12 @@ DB_NAME = "db.sqlite3"
 def create_app():
     app = Flask(__name__)
 
+    # Profile picture upload handling
+    UPLOAD_FOLDER = 'static/photos/profile_pictures/'
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+    
     app.config['SECRET_KEY'] = 'peepeepoopoo'
     app.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
@@ -36,7 +42,7 @@ def create_app():
 
     return app
 
-#This goes through and creates the databse if it does not yet exist when you run the app
+# Creates any new database elements
 def create_database(app):
     if not path.exists('website/' + DB_NAME):
         with app.app_context():

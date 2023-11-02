@@ -15,6 +15,8 @@ class User(db.Model, UserMixin):
     phone_number = db.Column(db.String)
     role = db.Column(db.String)
 
+    barber_detail = db.relationship("Barber_detail", backref="user", uselist=False)
+
     def get_id(self):
         return str(self.user_id)
 
@@ -23,7 +25,7 @@ class Barber_detail(db.Model):
     barber_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     rating = db.Column(db.Float)
-
+    picture_filename = db.Column(db.String)
 
 class Appointment(db.Model):
     __tablename__ = 'appointments'

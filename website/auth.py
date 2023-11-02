@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
+from .models import User, Barber_detail
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -42,6 +42,7 @@ def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
         name = request.form.get('name')
+        phone_number = request.form.get('phone_number')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         role = request.form.get('role')
@@ -63,6 +64,12 @@ def sign_up():
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', 'success')
+            # Check if role is 'barber' and add to Barber_detail table
+            if role =='barber':
+                new_barber = Barber_detail(user_id=new_user.user_id)
+                db.session.add(new_barber)
+                db.session.commit()
             return redirect(url_for('views.home'))
+
 
     return render_template("sign_up.html",user=current_user)

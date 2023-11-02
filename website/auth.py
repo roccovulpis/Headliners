@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
 
-# This file is used for authenticating users who try to log in, or making new account
+# This file is used for authenticating users.
 
 auth = Blueprint('auth', __name__)
 
@@ -33,14 +33,12 @@ def logout():
     logout_user()
     return redirect(url_for('views.home'))
 
-# This section is for creating a new user.
-# First it requests a user's email, name, and password.
-# Then it goes through and checks to make sure all of the inputs are valid.
-# Finally, if they all are within parameters, it will make a new user with their entered information.
-
+# Creats a new user.
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
+
+        # Extracts data from the form.
         email = request.form.get('email')
         name = request.form.get('name')
         phone_number = request.form.get('phone_number')
@@ -48,7 +46,11 @@ def sign_up():
         password2 = request.form.get('password2')
         role = request.form.get('role')
 
+        # Validates inputs.
+
+        # Checks if the email is already in use.
         user = User.query.filter_by(email=email).first()
+        
         if user:
             flash('Email is already in use.', 'danger')
         elif len(email) < 4:
@@ -60,12 +62,13 @@ def sign_up():
         elif len(password1) < 7:
             flash('Password must be atleast 7 characters.', 'danger')
         else:
+            # Creates new user and commits it to the database.
             new_user = User(email=email, name=name, password=generate_password_hash(password1, method='sha256'), role=role)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', 'success')
-            # Check if role is 'barber' and add to Barber_detail table
+            # Adds user to barber_details table if they are a barber
             if role =='barber':
                 new_barber = Barber_detail(user_id=new_user.user_id)
                 db.session.add(new_barber)

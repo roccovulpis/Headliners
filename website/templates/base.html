@@ -42,7 +42,6 @@
                             <!-- Links for barbers only -->
                             <a class="nav-item nav-link" id="availability" href="/availability">Availability</a>
                             <a class="nav-item nav-link" id="profile" href="{{ url_for('views.profile', barber_id=current_user.barber_detail.barber_id) }}">Profile</a>
-                            <a class="nav-item nav-link" id="upload_picture" href="/upload-picture">Upload Profile Picture</a>
                         {% endif %}
                     {% else %}
                         <a class="nav-item nav-link" id="login" href="/login">Login</a>

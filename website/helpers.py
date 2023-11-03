@@ -2,6 +2,7 @@ from flask import abort, current_app
 import os
 import secrets
 from werkzeug.utils import secure_filename
+from PIL import Image
 
 def get_barber_by_id(barber_id):
     from .models import Barber_detail
@@ -20,17 +21,16 @@ def allowed_file(filename):
     """
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def save_picture(form_picture):
+def save_picture(image):
     """
-    Save the uploaded picture to the designated upload folder.
+    Save the provided image bytes to the designated upload folder.
     """
     # Create a random hex name for the picture to avoid filename conflicts
     random_hex = secrets.token_hex(8)
-    _, file_extension = os.path.splitext(secure_filename(form_picture.filename))
-    picture_filename = random_hex + file_extension
+    picture_filename = random_hex + ".png"
     picture_path = os.path.join(current_app.root_path, 'static/photos/profile_pictures/', picture_filename)
 
     # Save the picture
-    form_picture.save(picture_path)
+    image.save(picture_path, 'PNG')
 
     return picture_filename

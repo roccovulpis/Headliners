@@ -26,6 +26,7 @@ class Barber_detail(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     rating = db.Column(db.Float)
     picture_filename = db.Column(db.String)
+    instagram_tag = db.Column(db.String)
 
 class Appointment(db.Model):
     __tablename__ = 'appointments'

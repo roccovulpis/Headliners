@@ -5,6 +5,10 @@ from .models import Barber_detail, User
 from werkzeug.utils import secure_filename
 from . import db
 import os
+from PIL import Image
+from io import BytesIO
+import base64
+
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -45,10 +49,28 @@ def edit_profile():
             flash('This email is already in use. Please use a different one.', 'danger')
             return render_template('edit_profile.html', barber=current_user, user=current_user)
 
-        # If a new profile picture is uploaded
-        if profile_picture and allowed_file(profile_picture.filename):
-            filename = save_picture(profile_picture)
-            current_user.barber_detail.picture_filename = filename
+        # Handle the cropped image
+        cropped_data = request.form.get('cropped_image_data')  # This is a base64 encoded string
+        
+        if cropped_data:
+            try:
+                # Decode the base64 data
+                base64_data = cropped_data.split(",")[1]
+                decoded_image_data = base64.b64decode(base64_data)
+                
+                # Convert to an image (PIL Image)
+                image = Image.open(BytesIO(decoded_image_data))
+                
+                # Use your utility function to save the picture
+                filename = save_picture(image)
+                
+                # Update the user's picture_filename field
+                current_user.barber_detail.picture_filename = filename
+                db.session.commit()
+            
+            except Exception as e:
+                flash(f'An error occurred: {str(e)}', 'danger')
+                return redirect(request.url)
 
         # Update other details
         current_user.name = name
@@ -64,43 +86,11 @@ def edit_profile():
     # If GET or any other method, render the edit-profile template
     return render_template('edit_profile.html', barber=current_user, user=current_user)
 
+@dashboard.route('/edit_availability', methods=['GET', 'POST'])
+def edit_availability():
+    return render_template("edit_availability.html", user=current_user)
 
-@dashboard.route('/upload-picture', methods=['GET', 'POST'])
-def upload_picture():
-    # Check if the user is a barber
-    if current_user.role != 'barber':
-        flash('This feature is for barbers only!', 'danger')
-        return redirect(url_for('views.home'))
-    
-    # Handle form submission
-    if request.method == 'POST':
-        # Check if the request has the file part
-        if 'file' not in request.files:
-            flash('No file part', 'danger')
-            return redirect(request.url)
-        
-        file = request.files['file']
-        
-        # If the user does not select a file, the browser might submit an empty file without a filename.
-        if file.filename == '':
-            flash('No selected file', 'danger')
-            return redirect(request.url)
-        
-        # If the file is allowed
-        if file and allowed_file(file.filename):
-            # Use the utility function to save the picture
-            filename = save_picture(file)
-            
-            # Update the user's picture_filename field
-            current_user.barber_detail.picture_filename = filename
-            db.session.commit()
+@dashboard.route('/rating', methods=['GET', 'POST'])
+def rating():
+    return render_template("rating.html", user=current_user)
 
-            flash('Your profile picture has been updated!', 'success')
-            return redirect(url_for('views.profile', barber_id=current_user.barber_detail.barber_id))
-        
-        else:
-            flash('Invalid file type', 'danger')
-            return redirect(request.url)
-
-    # If it's a GET request or any other case, render the upload form.
-    return render_template('upload_picture.html', user=current_user)

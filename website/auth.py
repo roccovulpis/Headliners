@@ -63,14 +63,15 @@ def sign_up():
             flash('Password must be atleast 7 characters.', 'danger')
         else:
             # Creates new user and commits it to the database.
-            new_user = User(email=email, name=name, password=generate_password_hash(password1, method='sha256'), role=role)
+            new_user = User(email=email, name=name, phone_number=phone_number, password=generate_password_hash(password1, method='sha256'), role=role)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', 'success')
             # Adds user to barber_details table if they are a barber
             if role =='barber':
-                new_barber = Barber_detail(user_id=new_user.user_id)
+                default_instagram_tag = 'headliners.eht'
+                new_barber = Barber_detail(user_id=new_user.user_id, instagram_tag=default_instagram_tag)
                 db.session.add(new_barber)
                 db.session.commit()
             return redirect(url_for('views.home'))

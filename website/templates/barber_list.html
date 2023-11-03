@@ -5,7 +5,7 @@
         {% for barber in barbers %}
         <div class="col-md-3">
             <div class="card mb-4">
-                <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.image_filename else 'default.jpg')) }}" class="card-img-top" alt="{{ barber.name }}">
+                <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.picture_filename else 'default.jpg')) }}" class="card-img-top" alt="{{ barber.name }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ barber.user.name }}</h5>
                         <a href="https://www.instagram.com/{{ barber.instagram_link }}" target="_blank">

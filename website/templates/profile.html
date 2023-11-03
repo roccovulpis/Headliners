@@ -7,7 +7,9 @@
         <div class="col-md-2">
             <img src="{{ url_for('static', filename='photos/profile_pictures/' + barber.barber_detail.picture_filename) }}" alt="{{ barber.name }}" class="img-fluid rounded-circle">
         </div>
-        
+            <a href="https://www.instagram.com/{{ barber.barber_detail.instagram_tag }}" target="_blank">
+                <i class="fab fa-instagram"></i> Follow on Instagram
+            </a>
         <!-- Barber Details and Booking Button -->
         <div class="col-md-10">
             <h2>{{ barber.name }}</h2>

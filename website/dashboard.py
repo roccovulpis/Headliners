@@ -29,9 +29,10 @@ def edit_profile():
     if request.method == 'POST':
         # Extract data from the form
         name = request.form.get('name')
-        phone = request.form.get('phone')
+        phone_number = request.form.get('phone_number')
         profile_picture = request.files.get('profile_picture') if 'profile_picture' in request.files else None
         email = request.form.get('email')
+        instagram_tag = request.form.get('instagram_tag')
         existing_user = User.query.filter_by(email=email).first()
 
         if len(email) < 4:
@@ -52,7 +53,8 @@ def edit_profile():
         # Update other details
         current_user.name = name
         current_user.email = email
-        current_user.barber_detail.phone = phone
+        current_user.phone_number = phone_number
+        current_user.barber_detail.instagram_tag = instagram_tag
 
         db.session.commit()
 

@@ -8,7 +8,9 @@
                 <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.image_filename else 'default.jpg')) }}" class="card-img-top" alt="{{ barber.name }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ barber.user.name }}</h5>
-                    <p class="card-text">Some brief description about the barber if you have any.</p>
+                        <a href="https://www.instagram.com/{{ barber.instagram_link }}" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
                     <a href="{{ url_for('views.profile', barber_id=barber.barber_id) }}" class="btn btn-primary">View Profile</a>
                     <a href="{{ url_for('views.appointment', barber_id=barber.barber_id) }}" class="btn btn-success">Book Now</a>
                 </div>

@@ -1,26 +1,78 @@
 {% extends 'base.html' %}
 {% block title %}Edit Profile{% endblock %}
 {% block content %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+</head>
+
+<div class="container mt-5">
     <h3>Edit Profile</h3>
     <form action="{{ url_for('dashboard.edit_profile') }}" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name" value="{{ barber.name }}">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ barber.name }}" class="form-control">
         </div>
-        <div>
-            <label for="email">Email:</label><br>
-            <input type="text" id="email" name="email" value="{{ barber.email }}">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" value="{{ barber.email }}" class="form-control">
         </div>
-        <div>
-            <label for="phone">Phone:</label><br>
-            <input type="text" id="phone" name="phone" value="{{ barber.phone }}">
+        <div class="form-group">
+            <label for="phone_number">Phone:</label>
+            <input type="text" id="phone_number" name="phone_number" value="{{ barber.phone_number }}" class="form-control">
         </div>
-        <div>
-            <label for="profile_picture">Profile Picture:</label><br>
-            <input type="file" id="profile_picture" name="profile_picture">
+        <div class="form-group">
+            <label for="instagram_tag">Instagram Tag:</label>
+            <input type="text" id="instagram_tag" name="instagram_tag" value="{{ barber.barber_detail.instagram_tag }}" class="form-control">
         </div>
-        <div>
-            <input type="submit" value="Update">
+        <!-- Image input -->
+        <input type="file" id="profile_picture" name="profile_picture">
+
+        <!-- Image preview and cropping area -->
+        <img id="image-preview" src="#" style="max-width: 500px;">
+
+        <!-- Hidden field to store the cropped image data -->
+        <input type="hidden" id="cropped_image_data" name="cropped_image_data">
+
+        <div class="form-group">
+            <input type="submit" id="update-btn" value="Update" class="btn btn-primary">
         </div>
     </form>
+    <script>
+        let image = document.getElementById('image-preview');
+        let cropper;
+
+        // When an image is selected, display it in the img element
+        document.getElementById('profile_picture').addEventListener('change', function (e) {
+            let file = e.target.files[0];
+            let reader = new FileReader();
+
+            reader.onload = function (event) {
+                image.src = event.target.result;
+                if (cropper) cropper.destroy(); // destroy the previous cropper instance if it exists
+                cropper = new Cropper(image, {
+                    aspectRatio: 1 / 1
+                });
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        // When the update button is clicked, crop the image and then continue with form submission
+        document.getElementById('update-btn').addEventListener('click', function (e) {
+            if (cropper) {
+                e.preventDefault(); // prevent the default behavior of the button
+
+                let croppedImage = cropper.getCroppedCanvas().toDataURL();
+                document.getElementById('cropped_image_data').value = croppedImage;
+
+                // Optionally: to visually indicate that cropping occurred, you can replace the image source with the cropped version
+                image.src = croppedImage;
+
+                // Submit the form after processing the cropped image
+                e.target.closest('form').submit();
+            }
+        });
+    </script>
+</div>
 {% endblock %}

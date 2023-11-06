@@ -36,7 +36,7 @@
                     <a class="nav-item nav-link" id="barbers" href="/barbers">Barbers</a>
                     <a class="nav-item nav-link" id="rating" href="{{ url_for('dashboard.rating')}}">Rating</a>
                     <!-- temp spot for appointment. move this later to buttons for each barber -->
-                    <a class="nav-item nav-link" id="appointment" href="{{ url_for('views.appointment')}}">Appointment</a>
+                    <a class="nav-item nav-link" id="appointment" href="{{ url_for('dashboard.book_appointment')}}">Appointment</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
@@ -45,7 +45,7 @@
                             <!-- Links for barbers only -->
                             <a class="nav-item nav-link" id="profile" href="{{ url_for('views.profile', barber_id=current_user.barber_detail.barber_id) }}">Profile</a>
                         {% endif %}
-                        <a class="nav-item nav-link" id="dashboard" href="/dashboard">Dashboard</a>
+                        <a class="nav-item nav-link" id="dashboard" href="{{ url_for('dashboard.home' )}}">Dashboard</a>
                         <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
                     {% else %}
                         <a class="nav-item nav-link" id="login" href="/login">Login</a>

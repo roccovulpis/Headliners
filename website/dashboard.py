@@ -21,7 +21,6 @@ def home():
         return render_template('client_dashboard.html',user=current_user)
     else:
         return redirect(url_for('views.home'))
-    
 
 @dashboard.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
@@ -34,7 +33,6 @@ def edit_profile():
         # Extract data from the form
         name = request.form.get('name')
         phone_number = request.form.get('phone_number')
-        profile_picture = request.files.get('profile_picture') if 'profile_picture' in request.files else None
         email = request.form.get('email')
         instagram_tag = request.form.get('instagram_tag')
         existing_user = User.query.filter_by(email=email).first()
@@ -81,16 +79,58 @@ def edit_profile():
         db.session.commit()
 
         flash('Your profile has been updated!', 'success')
-        return redirect(url_for('dashboard.home'))  # or wherever you want to redirect after successful update
-
+        return redirect(url_for('dashboard.home'))
+    
     # If GET or any other method, render the edit-profile template
     return render_template('edit_profile.html', barber=current_user, user=current_user)
 
-@dashboard.route('/edit_availability', methods=['GET', 'POST'])
+@dashboard.route('/edit-availability', methods=['GET', 'POST'])
 def edit_availability():
     return render_template("edit_availability.html", user=current_user)
 
+@dashboard.route('/book_appointment', methods=['GET', 'POST'])
+@login_required
+def book_appointment():
+    return render_template("appointment.html", user=current_user)
+
+
 @dashboard.route('/rating', methods=['GET', 'POST'])
+@login_required
 def rating():
     return render_template("rating.html", user=current_user)
 
+@dashboard.route('/settings', methods=['GET', 'POST'])
+@login_required
+def settings():
+    if current_user.role != 'client':
+        flash('This feature is only available to clients.', 'danger')
+        return redirect(url_for('views.home'))  # redirect non clients home
+
+    if request.method == 'POST':
+        # Extract data from the form
+        name = request.form.get('name')
+        phone_number = request.form.get('phone_number')
+        email = request.form.get('email')
+        existing_user = User.query.filter_by(email=email).first()
+
+        if len(email) < 4:
+            flash('Email must be greater than 4 characters.', 'danger')
+        elif len(name) < 2:
+            flash('Name must be greater than 1 character.', 'danger')
+
+        # Check if the email is already taken and it's not the current user's email
+        if existing_user and existing_user.user_id != current_user.user_id:
+            flash('This email is already in use. Please use a different one.', 'danger')
+            return render_template('settings.html', user=current_user)
+
+        # Update details
+        current_user.name = name
+        current_user.email = email
+        current_user.phone_number = phone_number
+        db.session.commit()
+
+        flash('Your profile has been updated!', 'success')
+        return redirect(url_for('dashboard.home')) 
+
+    # If GET or any other method, render the edit-profile template
+    return render_template('settings.html', user=current_user)

@@ -28,14 +28,4 @@ def barbers():
     barbers = Barber_detail.query.all()
     return render_template("barber_list.html", user=current_user, barbers=barbers)
 
-@views.route('/appointment', methods=['GET', 'POST'])
-def appointment():
-    # if request.method == 'POST':
-
-    return render_template("appointment.html", user=current_user)
-
-
-@views.route('/book-an-appointment')
-def book_an_appointment():
-    return "Book an Appointment"
 

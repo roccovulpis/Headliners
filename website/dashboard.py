@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from .helpers import allowed_file, save_picture
-from .models import Barber_detail, User
+from .helpers import allowed_file, save_picture, set_availability, generate_time_slots
+from .models import Barber_detail, User, Barber_availability
 from werkzeug.utils import secure_filename
+from datetime import time
 from . import db
 import os
 from PIL import Image
@@ -85,8 +86,16 @@ def edit_profile():
     return render_template('edit_profile.html', barber=current_user, user=current_user)
 
 @dashboard.route('/edit-availability', methods=['GET', 'POST'])
+@login_required
 def edit_availability():
-    return render_template("edit_availability.html", user=current_user)
+    if current_user.role != 'barber':
+        flash('This feature is for barbers only!', 'danger')
+        return redirect(url_for('views.home'))
+    if request.method == 'POST':
+        set_availability(current_user)
+        redirect(url_for('dashboard.edit_availability'))
+    time_slots = generate_time_slots(time(9,0), time(19,0), 30)
+    return render_template("edit_availability.html", user=current_user, time_slots=time_slots, )
 
 @dashboard.route('/book_appointment', methods=['GET', 'POST'])
 @login_required

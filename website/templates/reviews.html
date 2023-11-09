@@ -64,12 +64,12 @@
 <div class="container mt-5">
     <div class="row">
         {% for barber in barbers %}
-        <div class="col-md-4 mb-4{% if loop.last %} offset-md-4{% endif %}">
+        <div class="row-md-4 mb-4{% if loop.last %}{% endif %}">
             <!-- Add the "custom-card" class for styling the card -->
             <div class="card custom-card">
                 <!-- Apply the "rounded-circle" class and custom CSS for circular images -->
                 <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.picture_filename else 'default.jpg')) }}" class="card-img-top rounded-circle responsive-img" alt="{{ barber.name }}">
-                <div class="card-body {% if loop.index % 3 == 0 %}d-flex justify-content-between align-items-center{% endif %}">
+                <div>
                     <!-- Apply the "text-grey" class for text color -->
                     <h5 class="card-title text-grey">{{ barber.user.name }}</h5>
                     <a href="https://www.instagram.com/{{ barber.instagram_tag }}" target="_blank" class="btn btn-primary btn-sm">

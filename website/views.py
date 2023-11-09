@@ -28,4 +28,9 @@ def barbers():
     barbers = Barber_detail.query.all()
     return render_template("barber_list.html", user=current_user, barbers=barbers)
 
+@views.route('/reviews')
+def reviews():
+    barbers = Barber_detail.query.all()
+    return render_template("reviews.html", user=current_user, barbers=barbers)
+
 

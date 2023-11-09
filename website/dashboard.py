@@ -103,10 +103,10 @@ def book_appointment():
     return render_template("appointment.html", user=current_user)
 
 
-@dashboard.route('/rating', methods=['GET', 'POST'])
+@dashboard.route('/reviews', methods=['GET', 'POST'])
 @login_required
-def rating():
-    return render_template("rating.html", user=current_user)
+def reviews():
+    return render_template("reviews.html", user=current_user)
 
 @dashboard.route('/settings', methods=['GET', 'POST'])
 @login_required

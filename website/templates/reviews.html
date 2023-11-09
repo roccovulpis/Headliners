@@ -18,14 +18,16 @@
     }
 
     /* Custom CSS to make images responsive */
+    .responsive-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    /* Additional CSS for circular images */
     .rounded-circle {
         width: 150px;
         height: 150px;
-        transition: transform 0.3s ease; /* Add transition for image scaling */
-    }
-
-    .rounded-circle:hover {
-        transform: scale(1.1); /* Increase image size by 10% on hover */
     }
 
     /* Media query for responsiveness */
@@ -36,8 +38,14 @@
         }
 
         /* Adjust card layout for smaller screens */
-        .col-md-4 {
-            flex-basis: 50%; /* Display two cards per row on smaller screens */
+        .custom-card .card-body {
+            flex-direction: column; /* Stack card body elements vertically */
+            align-items: center; /* Center-align card body content */
+        }
+
+        /* Add spacing between stacked buttons */
+        .custom-card .card-body .btn {
+            margin-bottom: 10px; /* Adjust the margin between stacked buttons */
         }
     }
 
@@ -54,13 +62,15 @@
 </style>
 
 <div class="container mt-5">
-    <h1 class="text-left">Barbers</h1>
     <div class="row">
         {% for barber in barbers %}
         <div class="col-md-4 mb-4{% if loop.last %} offset-md-4{% endif %}">
+            <!-- Add the "custom-card" class for styling the card -->
             <div class="card custom-card">
+                <!-- Apply the "rounded-circle" class and custom CSS for circular images -->
                 <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.picture_filename else 'default.jpg')) }}" class="card-img-top rounded-circle responsive-img" alt="{{ barber.name }}">
-                <div class="card-body">
+                <div class="card-body {% if loop.index % 3 == 0 %}d-flex justify-content-between align-items-center{% endif %}">
+                    <!-- Apply the "text-grey" class for text color -->
                     <h5 class="card-title text-grey">{{ barber.user.name }}</h5>
                     <a href="https://www.instagram.com/{{ barber.instagram_tag }}" target="_blank" class="btn btn-primary btn-sm">
                         <i class="fab fa-instagram"></i> Instagram

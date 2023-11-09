@@ -1,26 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        {% for barber in barbers %}
-        <div class="col-md-3">
-            <div class="card mb-4">
-                <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.picture_filename else 'default.jpg')) }}" class="card-img-top" alt="{{ barber.name }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ barber.user.name }}</h5>
-                        <a href="https://www.instagram.com/{{ barber.instagram_tag }}" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    <a href="{{ url_for('views.profile', barber_id=barber.barber_id) }}" class="btn btn-primary">View Profile</a>
-                    <a href="{{ url_for('dashboard.book_appointment', barber_id=barber.barber_id) }}" class="btn btn-success">Book Now</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{% endblock %}{% extends 'base.html' %}
-{% block content %}
 <style>
     /* CSS for setting the background color of the entire page to grey */
     body {

@@ -19,4 +19,83 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* CSS for setting the background color of the entire page to grey */
+    body {
+        background-color: #f0f0f0; /* Light grey background for the page */
+    }
+
+    /* Custom CSS for card styling */
+    .custom-card {
+        background-color: #e0e0e0; /* Slightly lighter grey for card background */
+        border: 1px solid #ccc; /* Add a border for separation (optional) */
+    }
+
+    /* CSS for text color */
+    .text-grey {
+        color: #333333; /* Darker grey for text */
+    }
+
+    /* Custom CSS to make images responsive */
+    .responsive-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    /* Additional CSS for circular images */
+    .rounded-circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    /* Media query for responsiveness */
+    @media (max-width: 768px) {
+        .rounded-circle {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Adjust card layout for smaller screens */
+        .col-md-4 {
+            flex-basis: 50%; /* Display two cards per row on smaller screens */
+        }
+    }
+
+    /* CSS for button hover effect */
+    .btn {
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions for transform and box-shadow */
+        transform-origin: center; /* Set the transform origin to the center */
+    }
+
+    .btn:hover {
+        transform: scale(1.1); /* Increase button size by 10% on hover */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow on hover */
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        {% for barber in barbers %}
+        <div class="col-md-4 mb-4{% if loop.last %} offset-md-4{% endif %}">
+            <!-- Add the "custom-card" class for styling the card -->
+            <div class="card custom-card">
+                <!-- Apply the "rounded-circle" class and custom CSS for circular images -->
+                <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.picture_filename else 'default.jpg')) }}" class="card-img-top rounded-circle responsive-img" alt="{{ barber.name }}">
+                <div class="card-body">
+                    <!-- Apply the "text-grey" class for text color -->
+                    <h5 class="card-title text-grey">{{ barber.user.name }}</h5>
+                    <a href="https://www.instagram.com/{{ barber.instagram_tag }}" target="_blank" class="btn btn-primary btn-sm">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a href="{{ url_for('views.profile', barber_id=barber.barber_id) }}" class="btn btn-secondary btn-sm">View Profile</a>
+                    <a href="{{ url_for('dashboard.book_appointment', barber_id=barber.barber_id) }}" class="btn btn-success btn-sm">Book Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

@@ -1,17 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Create Appointment{% endblock %}
+{% block title %}Service Editor{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form method="POST" class="mt-5">
-                <h3 class="text-center mb-4">Create Barber Appointment</h3>
+                <h3 class="text-center mb-4">Create Barber Service</h3>
 
                 <!-- Barber Service -->
                 <div class="form-group mb-3">
                     <label for="service">Barber Service</label>
-                    <input type="text" class="form-control" id="service" name="service" placeholder="Service Name" aria-label="Barber Service">
+                    <input type="text" class="form-control" id="service" name="service" {{ name_string }} aria-label="Barber Service">
                 </div>
 
                 <!-- Description of the Service -->

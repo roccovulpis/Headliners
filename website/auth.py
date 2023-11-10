@@ -64,7 +64,7 @@ def sign_up():
         else:
             # Creates new user and commits it to the database.
             # got rid of hashing for now
-            new_user = User(email=email, name=name, phone_number=phone_number, password=password1, role=role)
+            new_user = User(email=email, name=name, phone_number=phone_number, password=generate_password_hash(password1, method='sha256'), role=role)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)

@@ -21,12 +21,8 @@
     .rounded-circle {
         width: 150px;
         height: 150px;
-        transition: transform 0.3s ease; /* Add transition for image scaling */
     }
 
-    .rounded-circle:hover {
-        transform: scale(1.1); /* Increase image size by 10% on hover */
-    }
 
     /* Media query for responsiveness */
     @media (max-width: 768px) {
@@ -59,7 +55,7 @@
         {% for barber in barbers %}
         <div class="col-md-4 mb-4{% if loop.last %} offset-md-4{% endif %}">
             <div class="card custom-card">
-                <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.picture_filename else 'default.jpg')) }}" class="card-img-top rounded-circle responsive-img" alt="{{ barber.name }}">
+                <img src="{{ url_for('static', filename='photos/profile_pictures/' + (barber.picture_filename if barber.picture_filename else 'default.jpg')) }}" class="card-img-top rounded-circle responsive-img mt-3 ms-3" alt="{{ barber.name }}">
                 <div class="card-body">
                     <h5 class="card-title text-grey">{{ barber.user.name }}</h5>
                     <a href="https://www.instagram.com/{{ barber.instagram_tag }}" target="_blank" class="btn btn-primary btn-sm">

@@ -10,18 +10,26 @@
     </nav>
     <hr class="mt-0 mb-4">
     <div class="row">
-        <div class="col-xl-4">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">User Information</h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Name: <strong>{{ user.name }}</strong></li>
-                        <li class="list-group-item">E-Mail: <strong>{{ user.email }}</strong></li>
-                        <li class="list-group-item">Phone Number: <strong>{{ user.phone_number }}</strong></li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <img src="{{ url_for('static', filename='photos/profile_pictures/' + current_user.barber_detail.picture_filename) }}" alt="{{ user.name }}" class="img-fluid profile-picture rounded-circle w-75">
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="card-title">User Information</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Name: <strong>{{ user.name }}</strong></li>
+                                <li class="list-group-item">E-Mail: <strong>{{ user.email }}</strong></li>
+                                <li class="list-group-item">Phone Number: <strong>{{ user.phone_number }}</strong></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+       
         <div class="container">
             <h3 class="mt-4 mb-4">Appointments</h3>
             <div class="table-responsive">

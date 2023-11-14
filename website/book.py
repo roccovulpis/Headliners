@@ -11,6 +11,11 @@ book = Blueprint('book', __name__)
 @book.route('/<int:barber_id>', methods=['GET', 'POST'])
 @login_required
 def book_appointment(barber_id):
+
+    if current_user.role != 'client':
+            flash ('This is for clients only! Scram!', 'danger')
+            return redirect(url_for('views.home'))
+    
     barber = Barber_detail.query.get_or_404(barber_id)
     services = barber.services
 
@@ -18,7 +23,6 @@ def book_appointment(barber_id):
     selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
 
     if request.method == 'POST':
-        client_only()
         service_id = request.form.get('service')
         time_slot = request.form.get('timeSlot')
 
@@ -72,9 +76,3 @@ def delete_appointment(appointment_id):
         print(e) 
 
     return redirect(url_for('dashboard.home'))
-
-
-def client_only():
-    if not current_user.role == 'client':
-            flash ('This is for clients only! Scram!', 'danger')
-            return redirect(url_for('views.home'))

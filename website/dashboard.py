@@ -28,7 +28,8 @@ def home():
 @dashboard.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    barbers_only()
+    if current_user.role != 'barber':
+        return redirect(url_for('views.home'))
 
     if request.method == 'POST':
         name = request.form.get('name')
@@ -86,10 +87,11 @@ def edit_profile():
 @dashboard.route('/edit-availability', methods=['GET', 'POST'])
 @login_required
 def edit_availability():
-    barbers_only()
+    if current_user.role != 'barber':
+        return redirect(url_for('views.home'))
     if request.method == 'POST':
         set_availability(current_user)
-        redirect(url_for('dashboard.edit_availability'))
+        return redirect(url_for('dashboard.home'))
     time_slots = generate_time_slots(time(9,0), time(19,0), 30)
 
     existing_availability = {}
@@ -116,7 +118,8 @@ def barber_services():
 @dashboard.route('/add_service', methods=['GET', 'POST'])
 @login_required
 def add_service():
-    barbers_only()
+    if current_user.role != 'barber':
+        return redirect(url_for('views.home'))
     if request.method == 'POST':
         price = request.form.get('price')
         if not price or not price.isnumeric():
@@ -227,7 +230,3 @@ def settings():
 def message():
     flash ('Not implemented yet teehee', 'success')
     return redirect(url_for('dashboard.home'))
-
-def barbers_only():
-    if not current_user=='barber':
-        return redirect(url_for('views.home'))

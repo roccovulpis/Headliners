@@ -76,36 +76,36 @@ def generate_time_slots(start_time, end_time, interval_minutes):
     return times
 
 def generate_available_time_slots(barber_id, date):
-    from .models import Barber_availability, Appointment
+    from .models import Barber_availability, Appointment, Barber_service
     available_time_slots = []
     week_day = date_to_weekday(date)
 
-    # Get the barber's availability for the specified day
     current_availability = Barber_availability.query.filter_by(
         barber_id=barber_id,
         week_day=week_day).first()
-    
-    print(f"barber_id: {barber_id}, week_day: {week_day}")
-    print(f"current_availability: {current_availability}")
 
     if current_availability:
         start_time = current_availability.start_time
         end_time = current_availability.end_time
 
         if start_time and end_time:
-            # Generate time slots using the available time range
             time_interval = timedelta(minutes=15)
-            current_time = datetime.combine(datetime.today(), start_time)
-            end_datetime = datetime.combine(datetime.today(), end_time)
+            current_time = datetime.combine(date, start_time)
+            end_datetime = datetime.combine(date, end_time)
 
-            while current_time <= end_datetime:
-                # Check if there's an existing appointment within the time slot
-                existing_appointment = Appointment.query.filter(
-                    Appointment.barber_id == barber_id,
-                    Appointment.datetime == current_time,
-                ).first()
+            while current_time + time_interval <= end_datetime:
+                # Assume the slot is available unless an overlapping appointment is found
+                slot_available = True
 
-                if not existing_appointment:
+                # Check for overlapping appointments
+                for appointment in Appointment.query.filter_by(barber_id=barber_id).all():
+                    appointment_end = appointment.datetime + timedelta(minutes=appointment.service.duration)
+
+                    if current_time < appointment_end and appointment.datetime < current_time + time_interval:
+                        slot_available = False
+                        break
+
+                if slot_available:
                     available_time_slots.append(current_time.strftime('%I:%M %p'))
 
                 current_time += time_interval

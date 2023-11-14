@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from .helpers import allowed_file, save_picture, set_availability, generate_time_slots
-from .models import Barber_detail, User, Barber_availability, Barber_service
+from .models import Barber_detail, User, Barber_availability, Barber_service, Appointment
 from werkzeug.utils import secure_filename
 from datetime import time
 from . import db
@@ -17,21 +17,20 @@ dashboard = Blueprint('dashboard', __name__)
 @login_required
 def home():
     if current_user.role == 'barber':
-        return render_template('barber_dashboard.html',user=current_user)
+        appointments = Appointment.query.filter_by(barber_id=current_user.barber_detail.barber_id).all()
+        return render_template('barber_dashboard.html',user=current_user, appointments=appointments)
     elif current_user.role == 'client':
-        return render_template('client_dashboard.html',user=current_user)
+        appointments = Appointment.query.filter_by(client_id=current_user.user_id).all()
+        return render_template('client_dashboard.html',user=current_user, appointments=appointments)
     else:
         return redirect(url_for('views.home'))
 
 @dashboard.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    if current_user.role != 'barber':
-        flash('This feature is only available to barbers.', 'danger')
-        return redirect(url_for('views.home'))  # redirect non barbers home
+    barbers_only()
 
     if request.method == 'POST':
-        # Extract data from the form
         name = request.form.get('name')
         phone_number = request.form.get('phone_number')
         email = request.form.get('email')
@@ -43,7 +42,7 @@ def edit_profile():
         elif len(name) < 2:
             flash('Name must be greater than 1 character.', 'danger')
 
-        # Check if the email is already taken and it's not the current user's email
+        # Check if the email is already taken
         if existing_user and existing_user.user_id != current_user.user_id:
             flash('This email is already in use. Please use a different one.', 'danger')
             return render_template('edit_profile.html', barber=current_user, user=current_user)
@@ -82,20 +81,29 @@ def edit_profile():
         flash('Your profile has been updated!', 'success')
         return redirect(url_for('dashboard.home'))
     
-    # If GET or any other method, render the edit-profile template
     return render_template('edit_profile.html', barber=current_user, user=current_user)
 
 @dashboard.route('/edit-availability', methods=['GET', 'POST'])
 @login_required
 def edit_availability():
-    if current_user.role != 'barber':
-        flash('This feature is for barbers only!', 'danger')
-        return redirect(url_for('views.home'))
+    barbers_only()
     if request.method == 'POST':
         set_availability(current_user)
         redirect(url_for('dashboard.edit_availability'))
     time_slots = generate_time_slots(time(9,0), time(19,0), 30)
-    return render_template("edit_availability.html", user=current_user, time_slots=time_slots, )
+
+    existing_availability = {}
+    for day in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']:
+        availability = Barber_availability.query.filter_by(barber_id=current_user.barber_detail.barber_id, week_day=day).first()
+        if availability:
+            existing_availability[day] = {
+                'start': availability.start_time.strftime('%I:%M %p') if availability.start_time else '',
+                'end': availability.end_time.strftime('%I:%M %p') if availability.end_time else ''
+            }
+        else:
+            existing_availability[day] = {'start': '', 'end': ''}
+
+    return render_template("edit_availability.html", user=current_user, time_slots=time_slots, existing_availability=existing_availability)
 
 
 # service related
@@ -174,11 +182,6 @@ def delete_service(service_id):
     return redirect(url_for('dashboard.barber_services'))
 
 
-@dashboard.route('/book_appointment', methods=['GET', 'POST'])
-@login_required
-def book_appointment():
-    return render_template("appointment.html", user=current_user)
-
 
 @dashboard.route('/reviews', methods=['GET', 'POST'])
 @login_required
@@ -190,10 +193,9 @@ def reviews():
 def settings():
     if current_user.role != 'client':
         flash('This feature is only available to clients.', 'danger')
-        return redirect(url_for('views.home'))  # redirect non clients home
+        return redirect(url_for('views.home')) 
 
     if request.method == 'POST':
-        # Extract data from the form
         name = request.form.get('name')
         phone_number = request.form.get('phone_number')
         email = request.form.get('email')
@@ -218,9 +220,13 @@ def settings():
         flash('Your profile has been updated!', 'success')
         return redirect(url_for('dashboard.home')) 
 
-    # If GET or any other method, render the edit-profile template
     return render_template('settings.html', user=current_user)
 
+@dashboard.route('/message', methods=['GET', 'POST'])
+@login_required
+def message():
+    flash ('Not implemented yet teehee', 'success')
+    return redirect(url_for('dashboard.home'))
 
 def barbers_only():
     if not current_user=='barber':

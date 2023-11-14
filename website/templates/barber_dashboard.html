@@ -2,12 +2,10 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <div class="container-xl px-4 mt-4">
-    <!-- Account page navigation -->
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" href="{{ url_for('dashboard.edit_profile') }}" target="__blank">Edit Profile</a>
-        <a class="nav-link" href="" >Appointments</a>
-        <a class="nav-link" href="{{ url_for('dashboard.edit_availability') }}" >Availability</a>
-        <a class="nav-link" href="{{ url_for('dashboard.barber_services') }}" >Edit Services</a>
+        <a class="nav-link active ms-0" href="{{ url_for('dashboard.edit_profile') }}">Edit Profile</a>
+        <a class="nav-link" href="{{ url_for('dashboard.edit_availability') }}">Availability</a>
+        <a class="nav-link" href="{{ url_for('dashboard.barber_services') }}">Edit Services</a>
         <a class="nav-link" href="" >Notifications</a>
     </nav>
     <hr class="mt-0 mb-4">
@@ -22,6 +20,44 @@
                         <li class="list-group-item">Phone Number: <strong>{{ user.phone_number }}</strong></li>
                     </ul>
                 </div>
+            </div>
+        </div>
+        <div class="container">
+            <h3 class="mt-4 mb-4">Appointments</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date (YYYY-MM-DD)</th>
+                            <th>Time</th>
+                            <th>Client</th>
+                            <th>Service</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                            <tr>
+                                <td>{{ appointment.datetime.strftime('%Y-%m-%d') }}</td>
+                                <td>{{ appointment.datetime.strftime('%I:%M %p') }}</td>
+                                <td>{{ appointment.client.name }}</td> 
+                                <td>{{ appointment.service.name }}</td>
+                                <td>{{ appointment.client.email }}</td>
+                                <td>{{ appointment.client.phone_number}}</td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('book.delete_appointment', appointment_id=appointment.appointment_id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                    <form method="POST" action="{{ url_for('dashboard.message') }}" class="d-inline">
+                                        <button type="submit" class="btn btn-primary btn-sm">Message</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

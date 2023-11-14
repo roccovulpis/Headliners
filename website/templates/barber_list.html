@@ -62,7 +62,7 @@
                         <i class="fab fa-instagram"></i> Instagram
                     </a>
                     <a href="{{ url_for('views.profile', barber_id=barber.barber_id) }}" class="btn btn-secondary btn-sm">View Profile</a>
-                    <a href="{{ url_for('dashboard.book_appointment', barber_id=barber.barber_id) }}" class="btn btn-success btn-sm">Book Now</a>
+                    <a href="{{ url_for('book.book_appointment', barber_id=barber.barber_id) }}" class="btn btn-success btn-sm">Book Now</a>
                 </div>
             </div>
         </div>

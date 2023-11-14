@@ -6,21 +6,22 @@
         <h1 class="mb-4 text-center">Set Your Availability</h1>
         <form method="POST" class="mx-auto mt-5" style="width:600px">
             {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] %}
+                {% set day_lower = day.lower() %}
                 <div class="row mb-3">
-                    <label for="{{ day.lower() }}Start" class="col-sm-2 col-form-label">{{ day }}:</label>
+                    <label for="{{ day_lower }}Start" class="col-sm-2 col-form-label">{{ day }}:</label>
                     <div class="col-sm-5">
-                        <select class="form-control" name="{{ day.lower() }}Start" id="{{ day.lower() }}Start">
+                        <select class="form-control" name="{{ day_lower }}Start" id="{{ day_lower }}Start">
                             <option value="">Select start time</option>
                             {% for time in time_slots %}
-                                <option value="{{ time }}">{{ time }}</option>
+                                <option value="{{ time }}" {% if existing_availability[day_lower]['start'] == time %}selected{% endif %}>{{ time }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="col-sm-5">
-                        <select class="form-control" name="{{ day.lower() }}End" id="{{ day.lower() }}End">
+                        <select class="form-control" name="{{ day_lower }}End" id="{{ day_lower }}End">
                             <option value="">Select end time</option>
                             {% for time in time_slots %}
-                                <option value="{{ time }}">{{ time }}</option>
+                                <option value="{{ time }}" {% if existing_availability[day_lower]['end'] == time %}selected{% endif %}>{{ time }}</option>
                             {% endfor %}
                         </select>
                     </div>

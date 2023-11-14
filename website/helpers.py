@@ -74,3 +74,46 @@ def generate_time_slots(start_time, end_time, interval_minutes):
         times.append(current_time.strftime('%I:%M %p'))
         current_time = (datetime.combine(datetime.today(), current_time) + timedelta(minutes=interval_minutes)).time()
     return times
+
+def generate_available_time_slots(barber_id, date):
+    from .models import Barber_availability, Appointment
+    available_time_slots = []
+    week_day = date_to_weekday(date)
+
+    # Get the barber's availability for the specified day
+    current_availability = Barber_availability.query.filter_by(
+        barber_id=barber_id,
+        week_day=week_day).first()
+    
+    print(f"barber_id: {barber_id}, week_day: {week_day}")
+    print(f"current_availability: {current_availability}")
+
+    if current_availability:
+        start_time = current_availability.start_time
+        end_time = current_availability.end_time
+
+        if start_time and end_time:
+            # Generate time slots using the available time range
+            time_interval = timedelta(minutes=15)
+            current_time = datetime.combine(datetime.today(), start_time)
+            end_datetime = datetime.combine(datetime.today(), end_time)
+
+            while current_time <= end_datetime:
+                # Check if there's an existing appointment within the time slot
+                existing_appointment = Appointment.query.filter(
+                    Appointment.barber_id == barber_id,
+                    Appointment.datetime == current_time,
+                ).first()
+
+                if not existing_appointment:
+                    available_time_slots.append(current_time.strftime('%I:%M %p'))
+
+                current_time += time_interval
+
+    return available_time_slots
+
+
+def date_to_weekday(date):
+    # Get the weekday name (e.g., 'Monday', 'Tuesday', etc.)
+    weekday_name = date.strftime('%A').lower()
+    return weekday_name

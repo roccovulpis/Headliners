@@ -38,9 +38,12 @@ class Appointment(db.Model):
     __tablename__ = 'appointments'
     appointment_id = db.Column(db.Integer, primary_key=True)
     barber_id = db.Column(db.Integer, db.ForeignKey('barber_details.barber_id'))
-    client_id = db.Column(db.Integer, db.ForeignKey('client_details.client_id'))
-    time = db.Column(db.Time)
-    service_id = db.Column(db.Integer, db.ForeignKey('services.service_id'))
+    client_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    datetime = db.Column(db.DateTime, nullable=False)
+    service_id = db.Column(db.Integer, db.ForeignKey('barber_services.barber_service_id'))
+
+    service = db.relationship("Barber_service", backref="appointment")
+    client = db.relationship('User', backref='appointments')
 
 class Review(db.Model):
     __tablename__ = 'reviews'
@@ -57,6 +60,9 @@ class Client_detail(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     preferred_barber_id = db.Column(db.Integer, db.ForeignKey('barber_details.barber_id'))
 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    user = db.relationship('User', backref='client_detail')
+
 class Barber_service(db.Model):
     __tablename__ = 'barber_services'
     barber_service_id = db.Column(db.Integer, primary_key=True)
@@ -65,6 +71,7 @@ class Barber_service(db.Model):
     desc = db.Column(db.String)
     price = db.Column(db.Integer)
     duration = db.Column(db.Integer)
+
 
 class Barber_availability(db.Model):
     __tablename__ = "barber_availability"

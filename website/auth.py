@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User, Barber_detail
+from .models import User, Barber_detail, Client_detail
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -74,6 +74,11 @@ def sign_up():
                 default_instagram_tag = 'headliners.eht'
                 new_barber = Barber_detail(user_id=new_user.user_id, instagram_tag=default_instagram_tag)
                 db.session.add(new_barber)
+                db.session.commit()
+            elif role == 'client':
+                # Create a new Client_detail entry for the client
+                new_client = Client_detail(user_id=new_user.user_id)
+                db.session.add(new_client)
                 db.session.commit()
             return redirect(url_for('views.home'))
 

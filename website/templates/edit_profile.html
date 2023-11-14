@@ -49,7 +49,7 @@
 
             reader.onload = function (event) {
                 image.src = event.target.result;
-                if (cropper) cropper.destroy(); // destroy the previous cropper instance if it exists
+                if (cropper) cropper.destroy();
                 cropper = new Cropper(image, {
                     aspectRatio: 1 / 1
                 });

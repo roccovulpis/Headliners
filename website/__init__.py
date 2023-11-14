@@ -27,9 +27,12 @@ def create_app():
     from .views import views
     from .auth import auth
     from .dashboard import dashboard
+    from .book import book
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(dashboard, url_prefix='/dashboard')
+    app.register_blueprint(book, url_prefix='/book')
+
 
     from .models import User, Barber_detail, Appointment, Barber_service, Client_detail, Review, Barber_availability
 

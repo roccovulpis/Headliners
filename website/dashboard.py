@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from .helpers import allowed_file, save_picture, set_availability, generate_time_slots
-from .models import Barber_detail, User, Barber_availability
+from .models import Barber_detail, User, Barber_availability, Barber_service
 from werkzeug.utils import secure_filename
 from datetime import time
 from . import db
@@ -97,6 +97,83 @@ def edit_availability():
     time_slots = generate_time_slots(time(9,0), time(19,0), 30)
     return render_template("edit_availability.html", user=current_user, time_slots=time_slots, )
 
+
+# service related
+@dashboard.route('/your-services')
+@login_required
+def barber_services():
+    return render_template("services.html", user=current_user, barber=current_user.barber_detail)
+
+
+@dashboard.route('/add_service', methods=['GET', 'POST'])
+@login_required
+def add_service():
+    barbers_only()
+    if request.method == 'POST':
+        price = request.form.get('price')
+        if not price or not price.isnumeric():
+            flash('Price was invalid. Try again', 'danger')
+            return redirect(url_for('dashboard.barber_services'))
+        
+        name = request.form.get('service')
+        desc = request.form.get('description')
+        price = int(price)
+        duration = int(request.form.get('duration'))
+
+        service = Barber_service(
+            name=name,
+            desc=desc,
+            price=price,
+            duration=duration,
+            barber_id=current_user.barber_detail.barber_id
+        )
+
+        db.session.add(service)
+        db.session.commit()
+        message = f"{name} added successfully!"
+        flash(message, 'success')
+        return redirect(url_for('dashboard.barber_services'))
+
+    return render_template('add_service.html', user=current_user)
+
+
+@dashboard.route('/edit_service/<int:service_id>', methods=['GET', 'POST'])
+@login_required
+def edit_service(service_id):
+    service = Barber_service.query.get_or_404(service_id)
+
+    if request.method == 'POST':
+
+        price = request.form.get('price')
+        if not price or not price.isnumeric():
+            flash('Price was invalid. Try again', 'danger')
+            return redirect(url_for('dashboard.barber_services'))
+
+        service.name = request.form.get('service')
+        service.desc = request.form.get('description')
+        service.price = int(price)
+        service.duration = int(request.form.get('duration'))
+
+        db.session.commit()
+        message = f"{service.name} updated successfully!"
+        flash(message, 'success')
+        return redirect(url_for('dashboard.barber_services'))
+
+    return render_template('edit_service.html', service=service, user=current_user)
+
+
+@dashboard.route('/delete_service/<int:service_id>', methods=['POST', 'GET'])
+@login_required
+def delete_service(service_id):
+    service = Barber_service.query.get_or_404(service_id)
+    if service:
+        message = f"{service.name} deleted successfully!"
+        db.session.delete(service)
+        db.session.commit()
+        flash(message, 'success')
+    return redirect(url_for('dashboard.barber_services'))
+
+
 @dashboard.route('/book_appointment', methods=['GET', 'POST'])
 @login_required
 def book_appointment():
@@ -143,3 +220,8 @@ def settings():
 
     # If GET or any other method, render the edit-profile template
     return render_template('settings.html', user=current_user)
+
+
+def barbers_only():
+    if not current_user=='barber':
+        return redirect(url_for('views.home'))

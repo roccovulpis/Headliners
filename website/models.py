@@ -28,6 +28,12 @@ class Barber_detail(db.Model):
     picture_filename = db.Column(db.String)
     instagram_tag = db.Column(db.String)
 
+    appointments = db.relationship("Appointment", backref="barber")
+    services = db.relationship("Barber_service", backref="barber")
+    reviews = db.relationship("Review", backref="barber")
+    availability = db.relationship("Barber_availability", backref="barber")
+
+
 class Appointment(db.Model):
     __tablename__ = 'appointments'
     appointment_id = db.Column(db.Integer, primary_key=True)

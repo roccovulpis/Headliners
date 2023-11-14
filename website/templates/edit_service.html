@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Service Editor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST" class="mt-5">
+                <h3 class="text-center mb-4">Edit Barber Service</h3>
+
+                <!-- Barber Service -->
+                <div class="form-group mb-3">
+                    <label for="service">Barber Service</label>
+                    <input type="text" class="form-control" id="service" name="service" value="{{ service.name }}" aria-label="Barber Service">
+                </div>
+
+                <!-- Description of the Service -->
+                <div class="form-group mb-3">
+                    <label for="description">Description of the Service (max 150 characters)</label>
+                    <input type="text" maxlength="150" class="form-control" id="description" name="description" value="{{ service.desc }}" aria-label="Description of the Service">
+                </div>
+
+                <!-- Price of the Service -->
+                <div class="form-group mb-3">
+                    <label for="price">Price of the Service ($)</label>
+                    <input type="number" class="form-control" id="price" name="price" value="{{ service.price }}" aria-label="Price of the Service">
+                </div>
+
+                <!-- Duration of the Service -->
+                <div class="form-group mb-4">
+                    <label for="duration">Duration</label>
+                    <select name="duration" id="duration" class="form-control" aria-label="Duration of the Service">
+                        <option value="15" {% if service.duration == 15 %}selected{% endif %}>15 minutes</option>
+                        <option value="30" {% if service.duration == 30 %}selected{% endif %}>30 minutes</option>
+                        <option value="45" {% if service.duration == 45 %}selected{% endif %}>45 minutes</option>
+                        <option value="60" {% if service.duration == 60 %}selected{% endif %}>1 hour</option>
+                        <option value="75" {% if service.duration == 75 %}selected{% endif %}>1 hour 15 minutes</option>
+                        <option value="90" {% if service.duration == 90 %}selected{% endif %}>1 hour 30 minutes</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Update Service</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

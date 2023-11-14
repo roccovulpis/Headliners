@@ -1,0 +1,26 @@
+<!-- page for barbers to view and manage all of their Services -->
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="text-left">Barber Services</h1>
+    <a href="{{ url_for('dashboard.add_service') }}" class="btn btn-primary mb-3">Add Service</a>
+    <div class="row">
+        {% for service in barber.services %}
+        <div class="col-md-4 mb-4">
+            <div class="card custom-card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ service.name }}</h5>
+                    <p class="card-text">{{ service.desc }}</p>
+                    <p class="card-text">Price: ${{ service.price }}</p>
+                    <p class="card-text">Duration: {{ service.duration }} minutes</p>
+                    <a href="{{ url_for('dashboard.edit_service', service_id=service.barber_service_id) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{{ url_for('dashboard.delete_service', service_id=service.barber_service_id) }}" class="btn btn-danger btn-sm">Delete</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

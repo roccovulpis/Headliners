@@ -12,6 +12,7 @@
                     <small>{{ message.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
                 </div>
                 <p class="mb-1">{{ message.content }}</p>
+                <small>{{ 'Read' if message.read_status else 'Unread' }}</small>
             </a>
         {% else %}
             <p class="text-muted">No messages in your inbox.</p>

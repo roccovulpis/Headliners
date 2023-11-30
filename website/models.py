@@ -88,6 +88,7 @@ class Message(db.Model):
     receiver_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     content = db.Column(db.String)
     timestamp = db.Column(db.DateTime(timezone=True), default=func.now())
-
+    read_status = db.Column(db.Boolean, default=False)
+    
     sender = db.relationship('User', foreign_keys=[sender_id])
     receiver = db.relationship('User', foreign_keys=[receiver_id])

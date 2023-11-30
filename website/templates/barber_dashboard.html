@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 text-center">
-                            <img src="{{ url_for('static', filename='photos/profile_pictures/' + current_user.barber_detail.picture_filename) }}" alt="{{ user.name }}" class="img-fluid profile-picture rounded-circle w-75">
+                            <img src="{{ url_for('static', filename='photos/profile_pictures/' + (user.barber_detail.picture_filename if user.picture_filename else 'default.jpg')) }}" alt="{{ user.name }}" class="img-fluid profile-picture rounded-circle w-75">
                         </div>
                         <div class="col-md-8">
                             <h5 class="card-title">User Information</h5>

@@ -72,7 +72,7 @@ def sign_up():
             # Adds user to barber_details table if they are a barber
             if role =='barber':
                 default_instagram_tag = 'headliners.eht'
-                new_barber = Barber_detail(user_id=new_user.user_id, instagram_tag=default_instagram_tag)
+                new_barber = Barber_detail(user_id=new_user.user_id, instagram_tag=default_instagram_tag, picture_filename='default.jpg')
                 db.session.add(new_barber)
                 db.session.commit()
             elif role == 'client':

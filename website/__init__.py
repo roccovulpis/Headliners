@@ -5,7 +5,6 @@ from os import path
 from flask_login import LoginManager
 from . import helpers
 
-
 db = SQLAlchemy()
 
 DB_NAME = "db.sqlite3"
@@ -18,8 +17,7 @@ def create_app():
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
-    app.config['SECRET_KEY'] = 'peepeepoopoo'
+    app.config['SECRET_KEY'] = 'testkey'
     app.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Send Message</h2>
+    <form method="post" action="{{ url_for('messages.send_message') }}">
+        <div class="mb-3">
+            <label class="form-label">Recipient</label>
+            {% if user.role == 'barber' %}
+                <!-- Barber sending to clients: Use checkboxes -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="all_past_clients" id="all_past_clients">
+                    <label class="form-check-label" for="all_past_clients">
+                        Send to All Past Clients
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="all_clients" id="all_clients">
+                    <label class="form-check-label" for="all_clients">
+                        Send to All Clients
+                    </label>
+                </div>
+                {% for client in recipients %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="receivers" value="{{ client.user_id }}" id="client{{ client.user_id }}">
+                        <label class="form-check-label" for="client{{ client.user_id }}">
+                            {{ client.name }}
+                        </label>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Client sending to a barber: Use dropdown -->
+                <select class="form-select" id="receiver" name="receiver">
+                    {% for barber in recipients %}
+                        <option value="{{ barber.user_id }}" {% if preselected_recipient and preselected_recipient.user_id == barber.user_id %}selected{% endif %}>{{ barber.user.name }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Message</label>
+            <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</div>
+{% endblock %}

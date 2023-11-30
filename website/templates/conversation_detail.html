@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Conversation with {{ partner.name }}</h2>
+        <div class="ms-auto">
+            <a href="{{ url_for('messages.home') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ url_for('messages.send_message', reply_to=partner.user_id) }}" class="btn btn-primary">Reply</a>
+        </div>
+    </div>
+    <div class="list-group mt-3">
+        {% for message in messages %}
+            <div class="list-group-item">
+                <strong>{{ message.sender.name }}:</strong>
+                <p>{{ message.content }}</p>
+                <small>{{ message.timestamp.strftime('%I:%M%p %m/%d/%Y') }}</small>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

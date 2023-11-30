@@ -9,33 +9,38 @@ api_secret = os.getenv('MJ_APIKEY_PRIVATE')
 mailjet = Client(auth=(api_key, api_secret), version='v3.1')
 sender_email = "headliners@wangify.com"
 
-def send_message(template_id = 5313119, barber_name = "Headliners Barbershop", first_name = "User", message = "default", user_email = None):
+def send_email_notification(recipient_email, recipient_name, sender_name, message_content, role, template_id=5313119):
+
+	subject = f"You have a new message from {sender_name}"
+	if role == 'barber':
+		subject = (f"New client message from {sender_name}")
+	     
 	data = {
-	'Messages': [
-			{
-				"From": {
-					"Email": sender_email,
-					"Name": "Headliners Barbershop"
-				},
-				"To": [
-					{
-						"Email": user_email,
-						"Name": "User"
+			'Messages': [
+				{
+					"From": {
+						"Email": sender_email,
+						"Name": "Headliners Barbershop"
+					},
+					"To": [
+						{
+							"Email": recipient_email,
+							"Name": recipient_name
+						}
+					],
+					"TemplateID": template_id,
+					"TemplateLanguage": True,
+					"Subject": subject,
+					"Variables": {
+						"firstname": recipient_name,
+						"barber_name": sender_name,
+						"message": message_content
 					}
-				],
-				"TemplateID": template_id,
-				"TemplateLanguage": True,
-				"Subject": "You have a new message from [[data:barber_name:""]]",
-				"Variables": {
-		"firstname": first_name,
-		"barber_name": barber_name,
-		"message": message
-	}
-			}
-		]
-	}
+				}
+			]
+		}
 	result = mailjet.send.create(data=data)
-	print (result.status_code)
-	print (result.json())
+	print(result.status_code)
+	print(result.json())
 
 

@@ -4,12 +4,15 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Inbox</h2>
+    <a href="{{ url_for('messages.send_message') }}" class="btn btn-primary mb-3">
+        <i class="fas fa-paper-plane"></i> Send Message
+    </a>
     <div class="list-group">
         {% for message in messages %}
-            <a href="{{ url_for('message_detail', message_id=message.message_id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <a href="{{ url_for('messages.detail', message_id=message.message_id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ message.sender.name }}</h5>
-                    <small>{{ message.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+                    <small>{{ message.timestamp.strftime('%m/%d/%Y %I:%M %p') }}</small>
                 </div>
                 <p class="mb-1">{{ message.content }}</p>
                 <small>{{ 'Read' if message.read_status else 'Unread' }}</small>

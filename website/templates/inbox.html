@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Inbox{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Inbox</h2>
+    <div class="list-group">
+        {% for message in messages %}
+            <a href="{{ url_for('message_detail', message_id=message.message_id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ message.sender.name }}</h5>
+                    <small>{{ message.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+                </div>
+                <p class="mb-1">{{ message.content }}</p>
+            </a>
+        {% else %}
+            <p class="text-muted">No messages in your inbox.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

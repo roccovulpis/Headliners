@@ -80,3 +80,14 @@ class Barber_availability(db.Model):
     week_day = db.Column(db.String)
     start_time = db.Column(db.Time)
     end_time = db.Column(db.Time)
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+    message_id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    content = db.Column(db.String)
+    timestamp = db.Column(db.DateTime(timezone=True), default=func.now())
+
+    sender = db.relationship('User', foreign_keys=[sender_id])
+    receiver = db.relationship('User', foreign_keys=[receiver_id])

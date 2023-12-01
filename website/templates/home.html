@@ -3,10 +3,62 @@
 
 {% block content %}
 
+<style>
+    /* Add styles for the background video */
+    .video-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
 
-<div calss="logo-container">
-    <img src="{{ url_for('static', filename='photos/home_pictures/headliners_logo.jpg') }}" alt="Headliners Barber Shop" style="max-width: 400px; display: block; margin: 0 auto; margin-top: 10px;">
+    .video-foreground,
+    .video-background iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+    
+    .content-container {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
+<!-- Background Video -->
+<div class="video-background">
+    <div class="video-foreground">
+        <iframe src="https://www.youtube.com/embed/u-8ipeVyxew?autoplay=1&mute=1&controls=0&showinfo=0&autohide=1&loop=1&playlist=u-8ipeVyxew" frameborder="0" allowfullscreen></iframe>
+    </div>
 </div>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/u-8ipeVyxew?si=VYqj0jV6YMIU9-3D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<!-- Main Content -->
+<div class="content-container">
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='photos/home_pictures/headliners_logo.png') }}" alt="Headliners Barber Shop" style="max-width: 400px; display: block; margin: 0 auto; margin-top: 5px;">
+    </div>
+
+    <!-- Bootstrap Carousel -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <!-- Indicators here -->
+        </ol>
+        <div class="carousel-inner">
+            <!-- Carousel items here -->
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <!-- Previous button -->
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <!-- Next button -->
+        </a>
+    </div>
+</div>
 
 {% endblock %}

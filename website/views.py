@@ -12,6 +12,10 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("home.html", user=current_user)
 
+@views.route('/test')
+def hometest():
+    return render_template("hometest.html", user=current_user)
+
 @views.route('/profile/<int:barber_id>')
 def profile(barber_id):
     barber = get_barber_by_id(barber_id)

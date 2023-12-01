@@ -26,8 +26,7 @@
                     <!-- Always shown links -->
                     <a class="nav-item nav-link" id="home" href="/">Home</a>
                     <a class="nav-item nav-link" id="barbers" href="/barbers">Barbers</a>
-                    <!-- <a class="nav-item nav-link" id="reviews" href="{{ url_for('dashboard.reviews')}}">Reviews</a> -->
-                    <!-- <a class="nav-item nav-link" id="reviews" href="/reviews">Reviews</a> -->
+                    <a class="nav-item nav-link" id="reviews" href="{{ url_for('dashboard.reviews')}}">Reviews</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}

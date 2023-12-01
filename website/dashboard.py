@@ -25,6 +25,7 @@ def home():
     else:
         return redirect(url_for('views.home'))
 
+
 @dashboard.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
@@ -83,6 +84,7 @@ def edit_profile():
         return redirect(url_for('dashboard.home'))
     
     return render_template('edit_profile.html', barber=current_user, user=current_user)
+
 
 @dashboard.route('/edit-availability', methods=['GET', 'POST'])
 @login_required
@@ -185,11 +187,12 @@ def delete_service(service_id):
     return redirect(url_for('dashboard.barber_services'))
 
 
-
 @dashboard.route('/reviews', methods=['GET', 'POST'])
 @login_required
 def reviews():
-    return render_template("reviews.html", user=current_user)
+    barbers = Barber_detail.query.all()
+    return render_template("reviews.html", user=current_user, barbers=barbers)
+
 
 @dashboard.route('/settings', methods=['GET', 'POST'])
 @login_required
@@ -224,6 +227,7 @@ def settings():
         return redirect(url_for('dashboard.home')) 
 
     return render_template('settings.html', user=current_user)
+
 
 @dashboard.route('/message', methods=['GET', 'POST'])
 @login_required

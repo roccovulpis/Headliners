@@ -9,6 +9,7 @@ db = SQLAlchemy()
 
 DB_NAME = "db.sqlite3"
 
+# This file is used to inititate all of the necessary files for actually running and using the website. 
 def create_app():
     app = Flask(__name__)
 

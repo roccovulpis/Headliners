@@ -4,7 +4,11 @@
 {% block content %}
 
 <style>
-    /* Add styles for the background video */
+
+/* Style for the appointment text */
+
+
+    /* Styles for the background video */
     .video-background {
         position: absolute;
         top: 0;
@@ -24,17 +28,56 @@
         height: 100%;
         pointer-events: none;
     }
-    
+
     .content-container {
         position: relative;
         z-index: 1;
     }
+
+    /* Updated CSS for static logo in top left */
+    .logo-container {
+        position: absolute;
+        top: 40px; /* Position at the top */
+        left: -200px; /* Position to the left */
+        z-index: 2; /* Ensure it's above other elements */
+    }
+
+    .logo-container img {
+        max-width: 150px; /* Adjust the maximum width of the logo as needed */
+        height: auto;
+    }
 </style>
+ 
+
 
 <!-- Background Video -->
+
+<style>
+    /* CSS to set the video container to 16:9 aspect ratio */
+    .video-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 aspect ratio (9 / 16 * 100%) */
+        overflow: hidden;
+    }
+
+    .video-foreground video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
 <div class="video-background">
     <div class="video-foreground">
-        <iframe src="https://www.youtube.com/embed/u-8ipeVyxew?autoplay=1&mute=1&controls=0&showinfo=0&autohide=1&loop=1&playlist=u-8ipeVyxew" frameborder="0" allowfullscreen></iframe>
+        <video width="100%" height="100%" autoplay loop muted>
+            <source src="{{ url_for('static', filename='photos/home_pictures/video1.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 </div>
 
@@ -60,5 +103,7 @@
         </a>
     </div>
 </div>
+
+ 
 
 {% endblock %}

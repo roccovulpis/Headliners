@@ -34,17 +34,19 @@
         z-index: 1;
     }
 
-    /* Updated CSS for static logo in top left */
     .logo-container {
         position: absolute;
-        top: 40px; /* Position at the top */
-        left: -200px; /* Position to the left */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, 150%); /* Center both horizontally and vertically */
         z-index: 2; /* Ensure it's above other elements */
     }
 
     .logo-container img {
-        max-width: 150px; /* Adjust the maximum width of the logo as needed */
+        max-width: 600px !important; /* Adjust the maximum width of the logo as needed to make it larger */
         height: auto;
+        display: block;
+        margin: 0 auto;
     }
 </style>
  
@@ -53,29 +55,31 @@
 <!-- Background Video -->
 
 <style>
-    /* CSS to set the video container to 16:9 aspect ratio */
-    .video-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding-top: 56.25%; /* 16:9 aspect ratio (9 / 16 * 100%) */
-        overflow: hidden;
-    }
+ /* CSS to set the video container to fill the entire screen */
+.video-background {
+    position: fixed; /* Changed to fixed to cover the whole viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Set width to 100% of the viewport width */
+    height: 100vh; /* Set height to 100% of the viewport height */
+    overflow: hidden;
+    z-index: -1; /* Ensure it stays behind other content */
+}
 
-    .video-foreground video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
+.video-foreground video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This will ensure the video covers the full area, might crop some parts of the video */
+}
 </style>
 
 <div class="video-background">
     <div class="video-foreground">
         <video width="100%" height="100%" autoplay loop muted>
-            <source src="{{ url_for('static', filename='photos/home_pictures/video1.mp4') }}" type="video/mp4">
+            <source src="{{ url_for('static', filename='photos/home_pictures/video2.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -84,7 +88,7 @@
 <!-- Main Content -->
 <div class="content-container">
     <div class="logo-container">
-        <img src="{{ url_for('static', filename='photos/home_pictures/headliners_logo.png') }}" alt="Headliners Barber Shop" style="max-width: 400px; display: block; margin: 0 auto; margin-top: 5px;">
+        <img src="{{ url_for('static', filename='photos/home_pictures/headliner_white_logo.png') }}" alt="Headliners Barber Shop" style="max-width: 400px; display: block; margin: 0 auto; margin-top: 5px;">
     </div>
 
     <!-- Bootstrap Carousel -->

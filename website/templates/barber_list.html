@@ -1,51 +1,50 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
-    /* CSS for setting the background color of the entire page to grey */
+    
     body {
-        background-color: #f0f0f0; /* Light grey background for the page */
+        background-color: #f0f0f0; 
     }
 
-    /* Custom CSS for card styling */
+   
     .custom-card {
-        background-color: #e0e0e0; /* Slightly lighter grey for card background */
-        border: 1px solid #ccc; /* Add a border for separation (optional) */
+        background-color: #e0e0e0; 
+        border: 1px solid #ccc; 
     }
 
-    /* CSS for text color */
+  
     .text-grey {
-        color: #333333; /* Darker grey for text */
+        color: #333333; 
     }
 
-    /* Custom CSS to make images responsive */
+    
     .rounded-circle {
         width: 150px;
         height: 150px;
     }
 
 
-    /* Media query for responsiveness */
+   
     @media (max-width: 768px) {
         .rounded-circle {
             width: 100px;
             height: 100px;
         }
 
-        /* Adjust card layout for smaller screens */
+        
         .col-md-4 {
-            flex-basis: 50%; /* Display two cards per row on smaller screens */
+            flex-basis: 50%; 
         }
     }
 
-    /* CSS for button hover effect */
     .btn {
-        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions for transform and box-shadow */
-        transform-origin: center; /* Set the transform origin to the center */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        transform-origin: center; 
     }
 
     .btn:hover {
-        transform: scale(1.1); /* Increase button size by 10% on hover */
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow on hover */
+        transform: scale(1.1); 
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
     }
 </style>
 

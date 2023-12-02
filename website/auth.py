@@ -33,7 +33,7 @@ def logout():
     logout_user()
     return redirect(url_for('views.home'))
 
-# Creats a new user.
+# Creates a new user.
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
@@ -46,11 +46,10 @@ def sign_up():
         password2 = request.form.get('password2')
         role = request.form.get('role')
 
-        # Validates inputs.
-
         # Checks if the email is already in use.
         user = User.query.filter_by(email=email).first()
         
+         # Validates inputs.  
         if user:
             flash('Email is already in use.', 'danger')
         elif len(email) < 4:

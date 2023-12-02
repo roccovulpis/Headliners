@@ -94,8 +94,10 @@ def edit_availability():
     if request.method == 'POST':
         set_availability(current_user)
         return redirect(url_for('dashboard.home'))
+    
     time_slots = generate_time_slots(time(9,0), time(19,0), 30)
 
+    # Edit availability using saved values
     existing_availability = {}
     for day in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']:
         availability = Barber_availability.query.filter_by(barber_id=current_user.barber_detail.barber_id, week_day=day).first()
@@ -110,7 +112,7 @@ def edit_availability():
     return render_template("edit_availability.html", user=current_user, time_slots=time_slots, existing_availability=existing_availability)
 
 
-# service related
+# Service related
 @dashboard.route('/your-services')
 @login_required
 def barber_services():
@@ -128,11 +130,13 @@ def add_service():
             flash('Price was invalid. Try again', 'danger')
             return redirect(url_for('dashboard.barber_services'))
         
+        # Fetch data from form
         name = request.form.get('service')
         desc = request.form.get('description')
         price = int(price)
         duration = int(request.form.get('duration'))
 
+        # Add service to DB
         service = Barber_service(
             name=name,
             desc=desc,
@@ -227,10 +231,3 @@ def settings():
         return redirect(url_for('dashboard.home')) 
 
     return render_template('settings.html', user=current_user)
-
-
-@dashboard.route('/message', methods=['GET', 'POST'])
-@login_required
-def message():
-    flash ('Not implemented yet teehee', 'success')
-    return redirect(url_for('dashboard.home'))

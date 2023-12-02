@@ -59,7 +59,7 @@ def send_message():
         receiver_ids_set = set()
         
         if current_user.role == 'client':
-            barber_id = request.form.get('receiver')  # Assuming 'receiver' is the name of the select field in your form
+            barber_id = request.form.get('receiver')
             if barber_id:
                 receiver_ids_set.add(int(barber_id))    
 

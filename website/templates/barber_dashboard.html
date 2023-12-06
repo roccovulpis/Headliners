@@ -58,9 +58,7 @@
                                     <form method="POST" action="{{ url_for('book.delete_appointment', appointment_id=appointment.appointment_id) }}" class="d-inline">
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
-                                    <form method="POST" action="{{ url_for('messages.send_message') }}" class="d-inline">
-                                        <button type="submit" class="btn btn-primary btn-sm">Message</button>
-                                    </form>
+                                    <a href="{{ url_for('messages.send_message', reply_to=appointment.client.user_id) }}" class="d-inline btn btn-primary btn-sm">Message</a>
                                 </td>
                             </tr>
                         {% endfor %}

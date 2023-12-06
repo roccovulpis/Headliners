@@ -1,5 +1,3 @@
-
-
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
@@ -44,9 +42,11 @@
                                 <td>{{ appointment.barber.user.name }}</td>
                                 <td>{{ appointment.service.name }}</td>
                                 <td>
-                                    <form method="POST" action="{{ url_for('book.delete_appointment', appointment_id=appointment.appointment_id) }}">
+                                    <form method="POST" action="{{ url_for('book.delete_appointment', appointment_id=appointment.appointment_id) }}" class="d-inline">
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
+                                    <a href="{{ url_for('messages.send_message', reply_to=appointment.barber.user.user_id) }}" class="d-inline btn btn-primary btn-sm">Message</a>
+                                   
                                 </td>
                             </tr>
                         {% endfor %}

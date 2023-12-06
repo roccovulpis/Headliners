@@ -2,9 +2,9 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<form method="POST" class="mx-auto mt-5" style="width:600px;">
+<form method="POST" class="mx-auto mt-5 flex-column align-items-center" style="width: 60vh">
     <h3 class="text-center">Register</h3>
-    <select name="role" id="role" class="form-control" required>
+    <select name="role" id="role" class="form-control mt-4 mb-4" required>
         <option value="client">Client</option>
         <option value="barber">Barber</option>
     </select>
@@ -30,5 +30,7 @@
     </div>
     <br />
     <button type="submit" class="btn btn-primary">Submit</button>
+    <a class="m-2" href="/login">Already have an account?</a>
+
 </form>
 {% endblock %}

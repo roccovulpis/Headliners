@@ -32,9 +32,6 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
     color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .navbar-brand-container {
@@ -43,27 +40,31 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateX(-50%);
 }
 
-.nav .nav-item,.nav-link,.navbar-brand{
+.navbar .nav-item,
+.navbar .nav-link,
+.navbar .navbar-brand {
     color: #ffffff;
 }
-.nav .nav-item,.navbar-brand:hover{
+
+.navbar .nav-item:hover,
+.navbar .navbar-brand:hover {
     color: #800000;
 }
 
-.nav .nav-item,.nav-link:hover{
+.navbar .nav-link:hover {
     color: #800000;
 }
 
-.nav .nav-link {
+.navbar .nav-link {
     color: #7c7c7c;
-    font-family: 'Source Sans 3', sans-serif;
+    font-family: 'Oswald', sans-serif;
     font-weight: 600;
+    letter-spacing: 1.3px;
+
 }
 
-.nav .nav-link:hover {
-    color: #4d4d4d; 
-    font-family: 'Source Sans 3', sans-serif;
-    font-weight: 600;
+.navbar .nav-link:hover {
+    color: #4d4d4d;
 }
 
 .form-control {

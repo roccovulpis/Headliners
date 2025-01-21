@@ -5,4 +5,4 @@ app = create_app()
 
 # Runs the app (Website)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

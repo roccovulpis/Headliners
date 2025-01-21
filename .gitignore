@@ -1,4 +1,6 @@
 .env
-venv
+.venv
 *.prproj
 *.psd
+.vercel
+node_modules
